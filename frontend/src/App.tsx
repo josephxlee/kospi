@@ -1,11 +1,24 @@
-export default function App() {
+import { useEffect, useState } from 'react';
+import { fetchKospiData } from './api';
+import Chart from './components/Chart';
+
+function App() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchKospiData().then(setData);
+  }, []);
+
   return (
-    <div className="p-6 text-center">
-      <h1 className="text-3cl font-bold text-blue-600">KOSPI 차트 분석</h1>
-      <p className="text-gray-600 mt-2">프론트앤드 초기 설정 완료!</p>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">📈 KOSPI 분석 차트</h1>
+      <Chart data={data} />
     </div>
-  )
+  );
 }
+
+export default App;
+
 
 /*
 
