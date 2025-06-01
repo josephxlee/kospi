@@ -14,6 +14,6 @@ app.add_middleware(
 
 @app.get("/api/kospi")
 def read_kospi():
-    df = get_kospi_data()
-    df = apply_indicators(df)
-    return df.tail(100).to_dict(orient="records")
+    df = get_kospi_data()             # 1. KOSPI 원시 데이터 가져오기
+    df = apply_indicators(df)         # 2. 기술적 지표 적용 (예: 이동평균, RSI 등)
+    return 0 #df.tail(100).to_dict(...)  # 3. 마지막 100개 데이터만 JSON으로 반환
