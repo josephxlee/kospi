@@ -7,13 +7,16 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True, 
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 @app.get("/api/kospi")
 def read_kospi():
-    df = get_kospi_data()             # 1. KOSPI 원시 데이터 가져오기
-    df = apply_indicators(df)         # 2. 기술적 지표 적용 (예: 이동평균, RSI 등)
-    return 0 #df.tail(100).to_dict(...)  # 3. 마지막 100개 데이터만 JSON으로 반환
+    df_data = get_kospi_data()             # 1. KOSPI 원시 데이터 가져오기
+    #df = apply_indicators(df)         # 2. 기술적 지표 적용 (예: 이동평균, RSI 등)
+    #return 0 #df.tail(100).to_dict(...)  # 3. 마지막 100개 데이터만 JSON으로 반환
+    #return df_data
+    return {"message": "Hello from backend"}

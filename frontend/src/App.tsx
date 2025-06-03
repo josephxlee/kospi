@@ -1,3 +1,33 @@
+import { useEffect, useState } from "react";
+
+function App() {
+  const [msg, setMsg] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:8001/api/kospi")
+      .then((res) => res.json())
+      .then((data) => setMsg(data.message));
+  }, []);
+
+  return <h1>{msg}</h1>;
+}
+
+export default App;
+
+
+/*
+export default function App() {
+  return (
+    <div className="p-6 text-center">
+      <h1 className="text-3xl font-bold text-blue-600">KOSPI 차트 분석</h1>
+      <p className="text-gray-600 mt-2">프론트엔드 초기 설정 완료!</p>
+    </div>
+  );
+}
+*/
+
+
+/*
 import { useEffect, useState } from 'react';
 import { fetchKospiData } from './api';
 import Chart from './components/Chart';
@@ -11,14 +41,14 @@ function App() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">📈 KOSPI 분석 차트</h1>
+      <h1 className="text-2xl font-bold mb-4"> KOSPI 분석 차트</h1>
       <Chart data={data} />
     </div>
   );
 }
 
 export default App;
-
+*/
 
 /*
 
