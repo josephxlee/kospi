@@ -4,7 +4,8 @@ function App() {
   const [msg, setMsg] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8001/api/kospi")
+    //fetch("http://localhost:8001/api/kospi")
+    fetch("https://kospi.onrender.com/api/kospi")
       .then((res) => res.json())
       .then((data) => setMsg(data.message));
   }, []);
