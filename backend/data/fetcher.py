@@ -53,11 +53,26 @@ def fetch_kospi_by_date_range(start_date, end_date, max_pages=20, save_csv=False
     # 전체 데이터프레임 병합
     df_all = pd.concat(all_data, ignore_index=True)
     
+    # 날짜 컬럼 변환
+    df_all["날짜"] = pd.to_datetime(df_all["날짜"], format="%Y.%m.%d", errors="coerce")
+
+    # 날짜 범위 필터링
+    df_all = df_all[(df_all["날짜"] >= start_date) & (df_all["날짜"] <= end_date)]
+
+    # 숫자형 컬럼 처리: 날짜 제외한 모든 컬럼을 float로 변환
+    for col in df_all.columns:
+        if col == "체결가" or col == "거래량(천주)" or col == "거래대금(백만)":
+            df_all[col] = pd.to_numeric(df_all[col], errors="coerce")
+
+    # CSV 저장 선택
+    if save_csv:
+        df_all.to_csv(csv_path, index=False)
+        
     return df_all
 
 
 def get_kospi_data():
     
-    df_data = fetch_kospi_by_date_range('2025-01-01', '2025-05-15', max_pages=10, save_csv=True)
+    df_data = fetch_kospi_by_date_range('2025-01-01', '2025-05-15', max_pages=10, save_csv=False)
     
     return df_data
