@@ -3,6 +3,7 @@ import pandas as pd
 from io import StringIO
 from bs4 import BeautifulSoup
 import re
+import os
 
 
 
@@ -71,8 +72,33 @@ def fetch_kospi_by_date_range(start_date, end_date, max_pages=20, save_csv=False
     return df_all
 
 
+def fetch_kospi_by_date_range_from_csv(start_date, end_date, csv_path="kospi_data.csv"):
+    start_date = pd.to_datetime(start_date)
+    end_date = pd.to_datetime(end_date)
+
+    # CSV 파일 존재 확인
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"CSV 파일이 존재하지 않습니다: {csv_path}")
+
+    # CSV 읽기
+    df = pd.read_csv(csv_path)
+
+    # 날짜 형식 변환
+    df["날짜"] = pd.to_datetime(df["날짜"], errors="coerce")
+
+    # 날짜 필터링
+    df_filtered = df[(df["날짜"] >= start_date) & (df["날짜"] <= end_date)]
+
+    # 숫자형 컬럼 정리 (선택적)
+    for col in df.columns:
+        if col not in ["날짜"]:
+            df_filtered[col] = pd.to_numeric(df_filtered[col], errors="coerce")
+
+    return df_filtered
+
 def get_kospi_data():
     
-    df_data = fetch_kospi_by_date_range('2025-01-01', '2025-05-15', max_pages=10, save_csv=False)
+    #df_data = fetch_kospi_by_date_range('1990-01-04', '2025-06-09', max_pages=1527, save_csv=True)
+    df_data = fetch_kospi_by_date_range_from_csv('1990-01-04', '2025-05-15', csv_path="kospi_data_20250609.csv")
     
     return df_data

@@ -17,12 +17,12 @@ app.add_middleware(
 @app.get("/api/kospi")
 def read_kospi():
     df_data = get_kospi_data()             # 1. KOSPI 원시 데이터 가져오기
+    
+    df_data = df_data.fillna(0)
+    
     #df = apply_indicators(df)         # 2. 기술적 지표 적용 (예: 이동평균, RSI 등)
-    #return 0 #df.tail(100).to_dict(...)  # 3. 마지막 100개 데이터만 JSON으로 반환
-    #return df_data
+    #return df.tail(100).to_dict(...)  # 3. 마지막 100개 데이터만 JSON으로 반환
+    
 
     df_data['날짜'] = df_data['날짜'].astype(str)  # datetime 직렬화
     return df_data.to_dict(orient="records")
-    #return df_data.astype(str).to_dict(orient="records")
-    #return df_data.to_dict(orient="records")
-    #return {"message": "Hello from backend"}
